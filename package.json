@@ -1,0 +1,23 @@
+{
+  "name": "front-end-judge",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app.js",
+  "author": {
+    "name": "hy",
+    "email": "zhy.zbklqx@Gmail.com"
+  },
+  "dependencies": {
+    "babel-plugin-transform-es2015-destructuring": "^6.4.0",
+    "babel-plugin-transform-es2015-parameters": "^6.4.5",
+    "body-parser": "^1.15.0",
+    "es6-promise": "^3.1.2",
+    "express": "^4.13.4",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemap": "^1.0.1",
+    "gulp-typescript": "^2.10.0",
+    "selenium-webdriver": "^2.53.1"
+  }
+}
