@@ -33,7 +33,10 @@ class FrontEndTestFramework {
             }).on('error', () => probe(cb));
         };
         this.e.use(express.static(staticRoot));
-        return new Promise(probe);
+        return new Promise(probe).catch(r => {
+            console.log("Runtime Error");
+            process.exit();
+        });
     }
     waitWithTimeout(cond) {
         return this.d.wait(cond, 2000).thenCatch(() => {

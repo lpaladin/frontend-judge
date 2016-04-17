@@ -39,7 +39,10 @@ export class FrontEndTestFramework {
 			}).on('error', () => probe(cb));
 		}
 		this.e.use(express.static(staticRoot));
-		return new Promise<void>(probe);
+		return new Promise<void>(probe).catch(r => {
+			console.log("Runtime Error");
+			process.exit();
+		});
 	}
 	
 	public waitWithTimeout(cond: webdriver.until.Condition<webdriver.WebElement>) {
