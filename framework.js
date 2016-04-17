@@ -10,6 +10,11 @@ class FrontEndTestFramework {
     constructor() {
         this.d = new webdriver.Builder().forBrowser('firefox').build();
         this.e = express();
+        if (!fs.existsSync(process.argv[2])) {
+            console.log("Runtime Error");
+            console.log("You may want to append <path/to/user/script.js> as an argument.");
+            process.exit();
+        }
         this.e.get("/", (req, res, next) => {
             res.type("html").end(this.inputHTML);
         });
@@ -33,14 +38,17 @@ class FrontEndTestFramework {
             }).on('error', () => probe(cb));
         };
         this.e.use(express.static(staticRoot));
-        return new Promise(probe).catch(r => {
-            console.log("Runtime Error");
-            process.exit();
-        });
+        return new Promise(probe);
     }
     waitWithTimeout(cond) {
         return this.d.wait(cond, 2000).thenCatch(() => {
             console.log("Time Limit Exceeded");
+            process.exit();
+        });
+    }
+    runUserScript() {
+        this.d.executeScript(readScript()).thenCatch(() => {
+            console.log("Runtime Error");
             process.exit();
         });
     }
@@ -92,7 +100,7 @@ function randStr() {
 exports.randStr = randStr;
 ;
 function readScript() {
-    return fs.readFileSync(path.join(__dirname, process.argv.pop())).toString();
+    return fs.readFileSync(path.join(__dirname, process.argv[2])).toString();
 }
 exports.readScript = readScript;
 ;

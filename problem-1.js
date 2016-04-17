@@ -1,14 +1,10 @@
-﻿import framework = require('./framework');
-import By = framework.By;
-import until = framework.until;
+"use strict";
 
+const framework = require('./framework');
+var By = framework.By;
+var until = framework.until;
 let fw = new framework.FrontEndTestFramework();
-let keys = [
-	framework.randStr(),
-	framework.randStr(),
-	framework.randStr()
-];
-
+let keys = [framework.randStr(), framework.randStr(), framework.randStr()];
 fw.inputHTML = `
 <!DOCTYPE html>
 
@@ -39,7 +35,6 @@ fw.inputHTML = `
 </body>
 </html>
 `;
-
 fw.correctOutputHTML = `
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
@@ -62,26 +57,27 @@ fw.correctOutputHTML = `
 		<div>
 			<input type="text" id="user-name" />
 			<input type="text" id="user-password" />
-			<div>${keys[2]}</div>
+			<div>${ keys[2] }</div>
 			<a href="javascript: void(0)" class="submit-btn">Submit</a>
 		</div>
 	</div>
 </body>
 </html>
 `;
-
 fw.e.post("/api/login", (req, res, next) => {
-	let { name, password } = req.body;
-	if (name == keys[0] && password == keys[1])
-		return res.json({ success: true, message: keys[2] });
+	var _req$body = req.body;
+	let name = _req$body.name;
+	let password = _req$body.password;
+
+	if (name == keys[0] && password == keys[1]) return res.json({ success: true, message: keys[2] });
 	return res.json({ success: false });
 });
-
 fw.startServer().then(() => {
-	fw.d.executeScript(framework.readScript());
+	fw.runUserScript();
 	fw.d.findElement(By.id('user-name')).sendKeys(keys[0]);
 	fw.d.findElement(By.id('user-password')).sendKeys(keys[1]);
 	fw.d.findElement(By.className("submit-btn")).click();
-	fw.waitWithTimeout(until.elementLocated(By.css("#user-password + div")));
+	fw.waitWithTimeout(until.alertIsPresent());
 	fw.testEqualityAndEnd();
 });
+//# sourceMappingURL=problem-1.js.map
