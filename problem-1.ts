@@ -77,11 +77,12 @@ fw.e.post("/api/login", (req, res, next) => {
 	return res.json({ success: false });
 });
 
-fw.startServer().then(() => {
+fw.eachIteration(i => {
 	fw.runUserScript();
 	fw.d.findElement(By.id('user-name')).sendKeys(keys[0]);
 	fw.d.findElement(By.id('user-password')).sendKeys(keys[1]);
 	fw.d.findElement(By.className("submit-btn")).click();
 	fw.waitWithTimeout(until.alertIsPresent());
-	fw.testEqualityAndEnd();
 });
+
+fw.startServer().then(() => fw.runTest());
